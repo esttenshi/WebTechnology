@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Студенческие клубы АГУ</title>
+    <!-- Скрипты и стили из старого шаблона -->
+    <script src="../static/lib/jQuery/jquery.js"></script>
+    <script src="../static/lib/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../static/lib/bootstrap/css/bootstrap.min.css">
+    <script src="../static/lib/lightbox/lightbox.js"></script>
+    <link rel="stylesheet" href="../static/lib/lightbox/lightbox.css">
+    <script src="../static/js/script.js"></script>
+    <link rel="stylesheet" href="../static/css/style_entryPage.css">
+</head>
+
+<body>
+
+<header>
+    <img src="../static/images/asu-logo.png">
+    <p>Астраханский государственный университет имени В.Н. Татищева</p>
+    <div class="menu">
+        <a href="/">
+            <button>Главная</button>
+        </a>
+        <a href = "/news.html">
+            <button>Новости</button>
+        </a>
+        <a href = "/clubs.html">
+            <button>Клубы</button>
+        </a>
+        <a href="/entry.html"> <!-- Переход в личный кабинет -->
+            <img src="../static/images/profile-user.png" alt="Профиль">
+        </a>
+    </div>
+</header>
+
+<div class="container">
+    <h2>Вход</h2>
+    <div id="login-form">
+        <div class="form-group">
+            <label for="login">Логин:</label>
+            <input type="text" id="login" placeholder="Введите логин" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" placeholder="Введите пароль" required>
+        </div>
+        <div class="form-group">
+            <a href="/">
+                <button onclick="login()">Войти</button>
+            </a>
+
+        </div>
+    </div>
+    <h2>Регистрация</h2>
+    <div id="register-form">
+        <div class="form-group">
+            <label for="register-login">Логин:</label>
+            <input type="text" id="register-login" placeholder="Введите логин" required>
+        </div>
+        <div class="form-group">
+            <label for="register-password">Пароль:</label>
+            <input type="password" id="register-password" placeholder="Введите пароль" required>
+        </div>
+        <div class="form-group">
+            <label for="register-confirm_password">Подтвердите пароль:</label>
+            <input type="password" id="register-confirm_password" placeholder="Введите пароль повторно" required>
+        </div>
+        <div class="form-group">
+            <a href="/">
+                <button onclick="registration()">Зарегистрироваться</button>
+            </a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>Контакты: asu@mail.ru</p>
+</footer>
+
+<script>
+    function login() {
+        var login = document.getElementById('login').value;
+        var password = document.getElementById('password').value;
+
+        var data = {
+            login: login,
+            password: password
+        };
+
+        fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Авторизация успешна');
+                // Если запрос успешен, перенаправляем пользователя на главную страницу
+                window.location.href = '/';
+            } else {
+                // Если возникла ошибка, отображаем сообщение об ошибке
+                response.json().then(data => {
+                    alert(data['Сообщение']);
+                    window.location.href = '/entry.html';
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка при выполнении запроса:', error);
+        });
+    }
+
+    function registration() {
+        var login = document.getElementById('register-login').value;
+        var password = document.getElementById('register-password').value;
+        var confirm_password = document.getElementById('register-confirm_password').value;
+
+        if (password !== confirm_password) {
+            alert('Пароли не совпадают');
+            return;
+        }
+
+        var data = {
+            login: login,
+            password: password,
+            confirm_password: confirm_password // Добавлено поле confirm_password
+        };
+
+        fetch('/registration', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Регистрация успешна');
+                // Можно перенаправить пользователя на страницу входа или другую страницу
+                window.location.href = '/main.html';
+            } else {
+                // Если возникла ошибка, отображаем сообщение об ошибке
+                response.json().then(data => {
+                    alert(data['Сообщение']);
+                    window.location.href = '/entry.html';
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка при выполнении запроса:', error);
+        });
+    }
+</script>
+
+</body>
+
+</html>

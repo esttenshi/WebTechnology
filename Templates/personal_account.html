@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../static/lib/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../static/lib/bootstrap/css/bootstrap.min.css">
+    <script src="../static/lib/lightbox/lightbox.js"></script>
+    <link rel="stylesheet" href="../static/lib/lightbox/lightbox.css">
+    <script src="../static/js/script.js"></script>
+    <link rel="stylesheet" href="../static/css/style_accountsPage.css">
+    <title>Студенческие клубы АГУ</title>
+</head>
+<body>
+
+<header>
+    <img src="../static/images/asu-logo.png">
+    <p>Астраханский государственный университет имени В.Н. Татищева</p>
+    <div class="menu">
+        <a href="/">
+            <button>Главная</button>
+        </a>
+        <a href="/news.html">
+            <button>Новости</button>
+        </a>
+        <a href="/clubs.html">
+            <button>Клубы</button>
+        </a>
+        <a href="/entry.html"> <!-- Переход в личный кабинет -->
+            <img src="../static/images/profile-user.png" alt="Профиль">
+        </a>
+    </div>
+</header>
+
+<div class="container" data-user-id="{{ user.id if user else '' }}">
+    {% if user %}
+        <label for="surname">Фамилия:</label>
+        <input type="text" id="surname" value="{{ user.surname }}">
+
+        <label for="name">Имя:</label>
+        <input type="text" id="name" value="{{ user.name }}">
+
+        <label for="patronymic">Отчество:</label>
+        <input type="text" id="patronymic" value="{{ user.patronymic }}">
+
+        <div class="buttons">
+            <button id="saveBtn">Сохранить</button>
+            <a href="/create_club.html">
+                <button id="createClubBtn">Создать клуб</button>
+            </a>
+            <a href="/logout">
+                <button>Выйти</button>
+            </a>
+        </div>
+    {% else %}
+        <p>Пользователь не найден</p>
+    {% endif %}
+</div>
+
+<footer>
+    <p>Контакты: asu@mail.ru</p>
+</footer>
+
+<script>
+document.getElementById('saveBtn').addEventListener('click', function() {
+    const container = document.querySelector('.container');
+    const userId = container.getAttribute('data-user-id');
+
+    console.log('User ID:', userId); // Проверка, что ID действительно передается
+
+    if (!userId) {
+        console.error('User ID not found');
+        return;
+    }
+
+    const data = {
+        surname: document.getElementById('surname').value,
+        name: document.getElementById('name').value,
+        patronymic: document.getElementById('patronymic').value
+    };
+
+    fetch(`/users/${userId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        }
+        throw new Error('Network response was not ok.');
+    })
+    .then(data => {
+        console.log('Success:', data);
+        alert('Данные успешно сохранены.');
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert('Произошла ошибка при сохранении данных.');
+    });
+});
+</script>
+
+</body>
+</html>

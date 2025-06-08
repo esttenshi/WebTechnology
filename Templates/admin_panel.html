@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Студенческие клубы АГУ</title>
+    <link rel="stylesheet" href="../static/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/lib/lightbox/lightbox.css">
+    <link rel="stylesheet" href="../static/css/style_applicationsPage.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<header>
+    <img src="../static/images/asu-logo.png">
+    <p>Астраханский государственный университет имени В.Н. Татищева</p>
+    <div class="menu">
+        <a href="/">
+            <button>Главная</button>
+        </a>
+        <a href = "/news.html">
+            <button>Новости</button>
+        </a>
+        <a href = "/clubs.html">
+            <button>Клубы</button>
+        </a>
+        <a href="/entry.html">
+            <img src="../static/images/profile-user.png" alt="Профиль">
+        </a>
+    </div>
+</header>
+
+<div class="applications-container">
+    <div class="centered-applications">
+        {% for application in applications %}
+        <div class="application">
+            <h3>{{ application.title }}</h3>
+                {% for user in users %}
+                    {% if user.id == application.head %}
+                        <p>{{ user.name }} {{ user.surname }}</p>
+                    {% endif %}
+                {% endfor %}
+            <p>{{ application.description }}</p>
+            <button class="accept-button" data-application-id="{{ application.id }}">Принять</button>
+            <button class="reject-button" data-application-id="{{ application.id }}">Отклонить</button>
+        </div>
+        {% endfor %}
+    </div>
+    <a href="/logout">
+        <button>Выйти</button>
+    </a>
+    <button class="return-button">Вернуться</button>
+</div>
+
+<footer>
+    <p>Контакты: asu@mail.ru</p>
+</footer>
+
+
+<script>
+    const acceptButtons = document.querySelectorAll('.accept-button');
+    acceptButtons.forEach(button => {
+        button.addEventListener('click', () => {
+           const applicationId = button.dataset.applicationId;
+           fetch(`/accept_club_application/${applicationId}`, {
+               method: 'POST',
+               headers: {
+                   'Content-Type': 'application/json'
+               }
+           })
+           .then(response => {
+               if (response.ok) {
+                   alert('Заявка успешно принята');
+                   location.reload(); // Обновляем страницу после выполнения операции
+               } else {
+                   alert('Не удалось принять заявку');
+               }
+
+           })
+           .catch(error => console.error('Ошибка:', error));
+        });
+    });
+
+    const rejectButtons = document.querySelectorAll('.reject-button');
+    rejectButtons.forEach(button => {
+        button.addEventListener('click', () => {
+           const applicationId = button.dataset.applicationId;
+           fetch(`/reject_club_application/${applicationId}`, {
+               method: 'DELETE',
+               headers: {
+                   'Content-Type': 'application/json'
+               }
+           })
+           .then(response => {
+               if (response.ok) {
+                   alert('Заявка успешно отклонена');
+                   location.reload();
+               } else {
+                   alert('Не удалось отклонить заявку');
+               }
+               location.reload(); // Обновляем страницу после выполнения операции
+           })
+           .catch(error => console.error('Ошибка:', error));
+        });
+    });
+        // Функция для возврата на предыдущую страницу
+    document.querySelector('.return-button').addEventListener('click', () => {
+        window.history.back();
+    });
+</script>

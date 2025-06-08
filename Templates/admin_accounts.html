@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../static/lib/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../static/lib/bootstrap/css/bootstrap.min.css">
+    <script src="../static/lib/lightbox/lightbox.js"></script>
+    <link rel="stylesheet" href="../static/lib/lightbox/lightbox.css">
+    <script src="../static/js/script.js"></script>
+    <script src="../static/js/save.js"></script> <!-- Наш код -->
+    <link rel="stylesheet" href="../static/css/style_accountsPage.css">
+    <title>Студенческие клубы АГУ</title>
+</head>
+<body>
+
+<header>
+    <img src="../static/images/asu-logo.png">
+    <p>Астраханский государственный университет имени В.Н. Татищева</p>
+    <div class="menu">
+        <a href="/">
+            <button>Главная</button>
+        </a>
+        <a href = "/news.html">
+            <button>Новости</button>
+        </a>
+        <a href = "/clubs.html">
+            <button>Клубы</button>
+        </a>
+        <a href="/entry.html">
+            <img src="../static/images/profile-user.png" alt="Профиль">
+        </a> 
+    </div>
+</header>
+    <div class="container">
+        
+        <label for="clubName">Название клуба:</label>
+        <input type="text" id="clubName">
+
+        <label for="clubLeader">Руководитель клуба:</label>
+        <input type="text" id="clubLeader">
+
+        <label for="students">Список студентов в клубе:</label>
+        <select id="students" multiple>
+            <option value="student1">Студент 1</option>
+            <option value="student2">Студент 2</option>
+            <option value="student3">Студент 3</option>
+            <option value="student4">Студент 4</option>
+        </select>
+
+        <div class="buttons">
+            <button id="conBtn">Связаться</button>
+            <button id="saveBtn">Сохранить</button>
+            <button id="deleteBtn">Удалить</button>
+        </div>
+
+    </div>
+
+    <script src="save.js"></script>
+
+<footer>
+    <p>Контакты: asu@mail.ru</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Студенческие клубы АГУ</title>
+    <link rel="stylesheet" href="../static/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/lib/lightbox/lightbox.css">
+    <link rel="stylesheet" href="../static/css/style_clubsPage.css">
+</head>
+<body>
+
+<header>
+    <img src="../static/images/asu-logo.png">
+    <p>Астраханский государственный университет имени В.Н. Татищева</p>
+    <div class="menu">
+        <a href="/">
+            <button>Главная</button>
+        </a>
+        <a href = "/news.html">
+            <button>Новости</button>
+        </a>
+        <a href = "/clubs.html">
+            <button>Клубы</button>
+        </a>
+        <a href="/entry.html">
+            <img src="../static/images/profile-user.png" alt="Профиль">
+        </a>
+    </div>
+</header>
+
+<div class="clubs-container">
+    <div class="centered-clubs">
+        {% for club in clubs %}
+        <p><a href="{{ url_for('get_club_page', id=club.id) }}">{{ club.title }}</a><br></p>
+        <img src="../static/images/clubs/{{ club.title }}.jpg" alt="{{ club.title }}">
+        {% endfor %}
+    </div>
+</div>
+
+<footer>
+    <p>Контакты: asu@mail.ru</p>
+</footer>
+
+</body>
+</html>

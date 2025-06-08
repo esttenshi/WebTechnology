@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Студенческие клубы АГУ</title>
+    <link rel="stylesheet" href="../static/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/lib/lightbox/lightbox.css">
+    <link rel="stylesheet" href="../static/css/style_newsPage.css">
+</head>
+<body>
+
+<header>
+    <img src="../static/images/asu-logo.png">
+    <p>Астраханский государственный университет имени В.Н. Татищева</p>
+    <div class="menu">
+        <a href="/">
+            <button>Главная</button>
+        </a>
+        <a href = "/news.html">
+            <button>Новости</button>
+        </a>
+        <a href = "/clubs.html">
+            <button>Клубы</button>
+        </a>
+        <a href="/entry.html"> <!-- Переход в личный кабинет -->
+            <img src="../static/images/profile-user.png" alt="Профиль">
+        </a>
+    </div>
+</header>
+
+<div class="news-container">
+    {% for news_item in news[:2] %}
+        <div class="centered-news">
+            <img src="{{ news_item.path_to_img }}" alt="Новость">
+            <h3>{{ news_item.title }}</h3>
+            <p>{{ news_item.news_text }}</p>
+            {% for club in clubs %}
+                {% if club.id == news_item.id_club %}
+                    <p>{{ club.title }}</p>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>
+<button id="load-more-btn">Посмотреть ещё</button>
+
+<footer>
+    <p>Контакты: asu@mail.ru</p>
+</footer>
+
+</body>
+</html>
+
+<script>
+    let start_index = 2;
+    let end_index = start_index + 2; // Например, начальные значения
+
+    document.getElementById('load-more-btn').addEventListener('click', function() {
+        fetch(`/load-more-news?start=${start_index}&end=${end_index}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.message && data.message === "Новостей больше нет") {
+                    const loadMoreBtn = document.getElementById('load-more-btn');
+                    loadMoreBtn.innerText = "Новостей больше нет";
+                    loadMoreBtn.disabled = true;
+                } else {
+                    data.news.forEach(newsItem => {
+                        const newsContainer = document.querySelector('.news-container');
+                        const newNewsItem = document.createElement('div');
+                        newNewsItem.classList.add('centered-news');
+
+                        newNewsItem.innerHTML = `
+                            <img src="${newsItem.path_to_img}" alt="Новость">
+                            <h3>${newsItem.title}</h3>
+                            <p>${newsItem.news_text}</p>
+                            <p>${newsItem.id_club}</p>
+                        `;
+                        newsContainer.appendChild(newNewsItem);
+                    });
+
+                    // Обновление индексов для следующего запроса
+                    start_index = end_index;
+                    end_index += 10; // Увеличивайте на нужное количество
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка добавления новостей:', error);
+            });
+    });
+</script>

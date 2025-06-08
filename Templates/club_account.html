@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../static/lib/bootstrap/js/bootstrap.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../static/lib/lightbox/lightbox.js"></script>
+    <link rel="stylesheet" href="../static/lib/lightbox/lightbox.css">
+    <script src="../static/js/save.js"></script> <!-- Наш код -->
+    <link rel="stylesheet" href="../static/css/style_clubPage.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.min.js"></script>
+    <title>Студенческие клубы АГУ</title>
+
+</head>
+<body>
+
+<header>
+    <img src="../static/images/asu-logo.png">
+    <p>Астраханский государственный университет имени В.Н. Татищева</p>
+    <div class="menu">
+        <a href="/">
+            <button>Главная</button>
+        </a>
+        <a href = "/news.html">
+            <button>Новости</button>
+        </a>
+        <a href = "/clubs.html">
+            <button>Клубы</button>
+        </a>
+        <a href="/entry.html"> <!-- Переход в личный кабинет -->
+            <img src="../static/images/profile-user.png" alt="Профиль">
+        </a>
+    </div>
+</header>
+
+<div class="wrapper">
+    <div class="container">
+
+    <label><p>{{ club.title }}</p></label>
+    <img class="club-image" src="../static/images/clubs/{{ club.title }}.jpg" alt="{{ club.title }}">
+    <label>Руководитель клуба:</label>
+    <p>{{ head.surname }} {{ head.name }}</p>
+    <img class="club-head-image" src="../static/images/heads/{{ head.name }}.jpg" alt="{{ head.name }}">
+
+    <label>Описание клуба:</label>
+    <p>{{ club.description }}</p>
+
+    <label>Список студентов в клубе:</label>
+
+    <div style="max-height: 200px; overflow-y: auto;">
+        <ul>
+            {% for user in users %}
+                {% if user.clubs is not none %}
+                    {% set clubs2 = user.clubs | list %}
+                    {% set clubs = [] %}
+                        {% for club_ in clubs2  %}
+                            {% if club.id in [club_ | int] %}
+                                <li>{{ user.surname }} {{ user.name }}</li>
+                            {% endif %}
+                        {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+
+    {% if redact %}
+        <a href="{{ url_for('get_editClub_page', id=club.id) }}">
+            <button>Редактировать</button>
+        </a>
+        <a href="{{ url_for('get_add_news_page', id=club.id) }}">
+            <button>Опубликовать новость</button>
+        </a>
+    {% else %}
+        {% if user %}
+            {% if club.id | string not in user_clubs %}
+                <a href="{{ url_for('get_applicationForm_page', club_id = club.id, user_id = user.id) }}">
+                    <button>Подать заявку</button>
+                </a>
+            {% else %}
+                <a href="#" onclick="deleteClub({{ club.id }}, {{ user.id }})">
+                    <button>Выйти из клуба</button>
+                </a>
+            {% endif %}
+        {% else %}
+            <a href="{{ url_for('get_entry_page') }}">
+                <button>Войти в систему для подачи заявки/редактирования</button>
+            </a>
+        {% endif %}
+    {% endif %}
+    <button class="return-button">Вернуться</button>
+    </div>
+
+    <div id="photoCarousel" class="carousel slide mt-4 mb-4" data-ride="carousel" style="max-width: 400px;">
+        <h2>Новости</h2>
+        <hr>
+        <div class="carousel-inner">
+            {% for news_item in news[:5] %}
+                {% if news_item.id_club == club.id %}
+                    <div class="carousel-item {% if loop.first %}active{% endif %}">
+                        <img src="{{ news_item.path_to_img }}" class="d-block w-100" alt="Новость">
+                        <div class="carousel-caption">
+                            <h3>{{ news_item.title }}</h3>
+                            <hr style="margin: 0 1%; margin-bottom: 10px; transform: translateX(1%); margin-top: 10px;">
+                            <p>{{ news_item.news_text }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <a class="carousel-control-prev" href="#photoCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </a>
+        <a class="carousel-control-next" href="#photoCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div id="calendar"></div>
+
+</div>
+
+<div id="eventDetails"></div>
+
+<div class="container" id="addEventForm">
+    <form method="POST" action="/add_event">
+
+    <label for="title_event">Название события</label>
+    <input type="text" id="title_event" name = "title_event">
+
+    <label for="date_event">Дата события:</label>
+    <input type="text" id="date_event" name="date_event">
+
+    <label for="time">Время события:</label>
+    <input type="text" id="time" name="time">
+
+    <input type="hidden" name="id_club" value={{club.id}} id="id_club">
+
+    <div class="buttons">
+        <button type="submit">Создать</button>
+    </div>
+
+    </form>
+
+</div>
+
+{% if redact %}
+    <button id="addEventButton">Добавить событие</button>
+{% endif %}
+
+<script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+      event.preventDefault(); // Останавливаем отправку формы по умолчанию
+      const form = event.target;
+      const formData = new FormData(form);
+
+      fetch(form.action, {
+        method: form.method,
+        body: formData
+      })
+      .then(response => {
+        if (response.ok) {
+          alert('Событие успешно добавлено');
+          location.reload();
+        } else {
+          alert('Не удалось добавить событие');
+          location.reload(); // Обновляем страницу после неудачной операции
+        }
+      })
+      .catch(error => {
+        console.error('Ошибка:', error);
+      });
+    });
+</script>
+
+<script>
+    document.getElementById('addEventButton').addEventListener('click', function() {
+        document.getElementById('addEventForm').style.display = 'block';
+    });
+</script>
+
+<script>
+    var events = {{ events | tojson }};
+    var calendarEl = document.getElementById('calendar');
+    var eventDetailsEl = document.getElementById('eventDetails');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        eventMouseEnter: function(info) {
+          var eventTime = info.event.extendedProps.time;
+            eventDetailsEl.textContent = 'Событие: ' + info.event.title + '\nВремя: ' + eventTime;
+        },
+        eventMouseLeave: function(info) {
+            eventDetailsEl.textContent = '';
+        }
+    });
+
+    events.forEach(event => {
+        calendar.addEvent({
+        title: event.title_event,
+        start: event.date_event,
+        extendedProps: {
+            time: event.time // Добавляем время как extendedProps
+        },
+        color: 'red'
+        });
+    });
+
+    calendar.render();
+
+</script>
+
+
+<footer>
+    <p>Контакты: asu@mail.ru</p>
+</footer>
+
+<script>
+        // Функция для возврата на предыдущую страницу
+    document.querySelector('.return-button').addEventListener('click', () => {
+        window.history.back();
+    });
+</script>
+
+<script>
+
+    function deleteClub(club_id, user_id) {
+        fetch(`/users/${club_id}/${user_id}`, {
+            method: 'DELETE'
+        })
+        .then(response => {
+               if (response.ok) {
+                   alert('Вы вышли из клуба');
+                   location.reload(); // Обновляем страницу после выполнения операции
+               } else {
+                   alert('Не удалось выйти из клуба');
+               }
+
+           })
+        .then(data => console.log(data))
+        .catch(error => console.error('Ошибка:', error));
+    }
+</script>
+
+<script>
+    $(document).ready(function(){
+    $("#photoCarousel .carousel-control-prev").click(function(event){
+    event.preventDefault();
+    $("#photoCarousel").carousel("prev");
+    });
+
+    $("#photoCarousel .carousel-control-next").click(function(event){
+    event.preventDefault();
+    $("#photoCarousel").carousel("next");
+    });
+    });
+</script>
+
+</body>
+</html>
