@@ -1,0 +1,319 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+/* Шапка */
+header p {
+    font-family: 'Open Sans';
+    font-size: 14px;
+}
+
+header {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    height: 100px;
+    border: 2px solid #ddd;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+header img {
+    padding-left: 20px;
+    padding-right: 10px;
+    width: 7%;
+    margin-left: 60px;
+}
+
+.menu {
+    display: flex;
+    padding-left: 50px;
+}
+
+.menu button {
+    margin-left: 120px;
+    background-color: #ffffff;
+    border: #ffffff;
+    font-family: 'Open Sans';
+    color: #e6413d;
+}
+
+.menu img {
+    margin-right: 60px;
+    width: 60px;
+    height: 30px;
+}
+
+
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    justify-content: center;
+    border: 3px solid #ccc;
+    border-radius: 20px;
+    align-items: center;
+    max-width: 400px;
+    margin-top: 300px;
+}
+
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    justify-content: center;
+    border: 3px solid #ccc;
+    border-radius: 20px;
+    align-items: center;
+    max-width: 400px;
+    margin-top: 300px;
+}
+
+
+/* Новостная карусель  */
+#photoCarousel {
+  float: left;
+  width: 50%; /* Adjust the width as needed */
+}
+
+#photoCarousel img {
+  height: 400px;
+  padding-left: 100px;
+}
+
+#photoCarousel h2 {
+  font-size: 24px;
+  color: #333;
+  text-align: center;
+  margin: 15px;
+  margin-left: 100px;
+  margin-top: 40px;
+}
+
+#photoCarousel hr {
+  margin: 0 30%;
+  margin-bottom: 20px;
+  transform: translateX(25%);
+}
+
+#photoCarousel button {
+  transform: translateY(-100%);
+}
+
+.carousel-control-prev {
+  margin-left: 80px;
+}
+
+.carousel-control-next {
+  margin-right: -20px;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  top: 89%;
+  max-width: 20px;
+  text-align: center;
+  width: 40%;
+  transform: translateY(-90%);
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(1);
+}
+
+.carousel-caption {
+    position: relative;
+    color: black;
+    padding-top: 40px;
+    padding-right: 17px;
+    padding-left: 50px;
+    max-width: 350px;
+}
+
+.carousel-caption h3 {
+    font-size: 18px;
+}
+
+.carousel-caption h3, .carousel-caption p {
+    text-align: center;
+    margin: 0;
+    word-wrap: break-word;
+}
+
+.carousel-caption p {
+  width: 100%;
+
+  text-overflow: ellipsis;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.form-group button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+label {
+    font-weight: bold;
+    width: 50%;
+    margin-right: 30px;
+}
+
+input, select, button {
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.buttons button {
+    background-color: #e6413d;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+input[type="text"],
+select {
+    width: 70%;
+    padding: 5px;
+}
+
+.club-head-image {
+    max-width: 200px;
+    max-height: 200px;
+    margin: 10px;
+}
+
+.club-image {
+    max-width: 300px;
+    max-height: 300px;
+    margin: 10px;
+}
+
+
+#calendar {
+    float: right;
+    width: 400px; /* Ширина календаря */
+    overflow-y: auto; /* Включить вертикальную прокрутку при необходимости */
+    margin-right: 70px;
+    margin-top: 70px;
+}
+
+#eventDetails {
+    margin-left: 1140px;
+}
+
+#addEventForm {
+    display: none;
+    margin-left: 490px;
+    margin-top: 500px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    max-width: 400px;
+    padding: 20px;
+    border: 3px solid #ccc;
+    border-radius: 20px;
+
+}
+
+#addEventForm label {
+margin: 0 auto;
+text-align: center
+}
+
+#addEventForm button {
+margin: 0 auto;
+text-align: center;
+margin-left:120px;
+}
+
+label {
+
+    font-weight: bold;
+    margin-right: 30px;
+}
+
+input, select, button {
+margin: 0 auto;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    clear: both;
+}
+
+
+.buttons button {
+    width: fit-content;
+    background-color: #e6413d;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="text"],
+select {
+    padding: 5px;
+}
+
+#addEventButton {
+    margin-left: 760px;
+    margin-top: 70px;
+}
+
+#deleteEventButton {
+    margin-left: 760px;
+    margin-top: 10px;
+}
+
+/* Подвал  */
+footer {
+    background-color: #dea9a9;
+    color: #ffffff;
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+    bottom: 0;
+    margin-top: 1100px;
+}

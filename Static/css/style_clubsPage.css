@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+/* Шапка */
+header p {
+    font-family: 'Open Sans';
+    font-size: 14px;
+}
+
+header {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    height: 100px;
+    border: 2px solid #ddd;
+    width: 101%;
+}
+
+header img {
+    padding-left: 20px;
+    padding-right: 10px;
+    width: 7%;
+    margin-left: 60px;
+}
+
+.menu {
+    display: flex;
+    padding-left: 50px;
+}
+
+.menu button {
+    margin-left: 120px;
+    background-color: #ffffff;
+    border: #ffffff;
+    font-family: 'Open Sans';
+    color: #e6413d;
+}
+
+.menu img {
+    margin-right: 60px;
+    width: 60px;
+    height: 30px;
+}
+
+
+/* Клубный контейнер  */
+.clubs-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  display: block;
+  text-align: center;
+  margin: 0 auto;
+  width: 60%;
+}
+
+.centered-clubs {
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.clubs-container {
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+    width: 60%;
+}
+
+.centered-clubs {
+  margin: 20px;
+  border: 2px solid #ddd;
+}
+
+.centered-clubs img {
+  max-width: 80%;
+  height: auto;
+  margin: 20px;
+}
+
+/* Подвал  */
+footer {
+    background-color: #dea9a9;
+    color: #ffffff;
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+    bottom: 0;
+    margin-top: 50px;
+}
